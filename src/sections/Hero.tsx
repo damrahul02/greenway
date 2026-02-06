@@ -238,7 +238,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-4"
+          className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-4"
         >
           Study{' '}
           <span className="text-green-400 font-semibold">IELTS</span> &{' '}
@@ -298,7 +298,7 @@ const Hero = () => {
               <div className="text-xl sm:text-2xl lg:text-3xl font-bold gradient-text mb-1">
                 {stat.value}
               </div>
-              <div className="text-xs sm:text-sm text-slate-400">{stat.label}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>

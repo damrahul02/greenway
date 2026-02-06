@@ -252,7 +252,7 @@ const Navbar = () => {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-40 lg:hidden"
           >
-            <div className="absolute inset-0 bg-slate-950/95 backdrop-blur-xl" />
+            <div className="absolute inset-0 bg-background/95 backdrop-blur-xl" />
             <div className="relative h-full flex flex-col pt-24 px-6">
               {navLinks.map((link, index) => (
                 <motion.div
@@ -263,7 +263,7 @@ const Navbar = () => {
                 >
                   {link.dropdown ? (
                     <div className="py-4 border-b border-white/10">
-                      <span className="text-lg font-medium text-white">{link.name}</span>
+                      <span className="text-lg font-medium text-foreground">{link.name}</span>
                       <div className="mt-3 ml-4 space-y-3">
                         {link.dropdown.map((item) => (
                           <div key={item.name}>
@@ -273,7 +273,7 @@ const Navbar = () => {
                                 e.preventDefault();
                                 scrollToSection(item.href);
                               }}
-                              className="flex items-center gap-2 text-slate-300 hover:text-green-400 transition-colors"
+                              className="flex items-center gap-2 text-muted-foreground hover:text-green-400 transition-colors"
                             >
                               <GraduationCap className="w-5 h-5" />
                               {item.name}
@@ -288,7 +288,7 @@ const Navbar = () => {
                                       e.preventDefault();
                                       scrollToSection(subItem.href);
                                     }}
-                                    className="block text-sm text-slate-400 hover:text-green-400 transition-colors"
+                                    className="block text-sm text-muted-foreground hover:text-green-400 transition-colors"
                                   >
                                     {subItem.name}
                                   </a>
@@ -306,7 +306,7 @@ const Navbar = () => {
                         e.preventDefault();
                         scrollToSection(link.href);
                       }}
-                      className="block py-4 text-xl font-medium text-white border-b border-white/10 hover:text-green-400 transition-colors"
+                      className="block py-4 text-xl font-medium text-foreground border-b border-white/10 hover:text-green-400 transition-colors"
                     >
                       {link.name}
                     </a>

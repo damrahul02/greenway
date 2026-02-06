@@ -78,7 +78,7 @@ const Journey = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold dark:text-white mb-6"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6"
           >
             Your Journey with <span className="gradient-text">Greenway</span>
           </motion.h2>
@@ -87,7 +87,7 @@ const Journey = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-slate-400 text-lg max-w-2xl mx-auto"
+            className="text-muted-foreground text-lg max-w-2xl mx-auto"
           >
             A clear pathway to world-class universities - from enrollment to
             graduation
@@ -125,14 +125,14 @@ const Journey = () => {
                     whileHover={{ rotate: 360 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <step.icon className="w-8 h-8 dark:text-white" />
+                    <step.icon className="w-8 h-8 text-foreground" />
                   </motion.div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-bold dark:text-white mb-3">
+                  <h3 className="text-xl font-bold text-foreground mb-3">
                     {step.title}
                   </h3>
-                  <p className="text-slate-400 leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed">
                     {step.description}
                   </p>
                 </motion.div>
@@ -153,7 +153,7 @@ const Journey = () => {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="mt-16 text-center"
         >
-          <p className="text-slate-400 mb-6">
+          <p className="text-muted-foreground mb-6">
             Ready to start your journey? Contact us today!
           </p>
           <motion.a

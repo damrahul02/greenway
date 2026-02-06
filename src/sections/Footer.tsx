@@ -93,7 +93,7 @@ const Footer = () => {
                 </svg>
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-white tracking-tight">
+                <span className="text-xl font-bold text-foreground tracking-tight">
                   GREENWAY
                 </span>
                 <span className="text-sm font-medium text-blue-400 -mt-1">
@@ -102,7 +102,7 @@ const Footer = () => {
               </div>
             </motion.a>
 
-            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
               Your gateway to world-class education. We help students achieve their
               dreams of studying abroad through IELTS and OTHM qualifications.
             </p>
@@ -113,7 +113,7 @@ const Footer = () => {
                 <motion.a
                   key={social.label}
                   href={social.href}
-                  className="w-10 h-10 rounded-lg glass border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-green-500/50 transition-all"
+                  className="w-10 h-10 rounded-lg glass border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-green-500/50 transition-all"
                   whileHover={{ scale: 1.1, rotate: 360 }}
                   whileTap={{ scale: 0.9 }}
                   aria-label={social.label}
@@ -126,7 +126,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-semibold mb-6">Quick Links</h3>
+            <h3 className="text-foreground font-semibold mb-6">Quick Links</h3>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
@@ -170,11 +170,11 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-white font-semibold mb-6">Contact Us</h3>
+            <h3 className="text-foreground font-semibold mb-6">Contact Us</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                <span className="text-slate-400 text-sm">
+                <span className="text-muted-foreground text-sm">
                   76 Satmasjid Road, Level 3,
                   <br />
                   Dhanmondi, Dhaka-1209
@@ -204,14 +204,14 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-sm text-center sm:text-left">
+          <p className="text-muted-foreground/60 text-sm text-center sm:text-left">
             © {new Date().getFullYear()} Greenway Academy. All rights reserved.
           </p>
 
           {/* Back to Top */}
           <motion.button
             onClick={scrollToTop}
-            className="flex items-center gap-2 text-slate-400 hover:text-green-400 transition-colors text-sm group"
+            className="flex items-center gap-2 text-muted-foreground hover:text-green-400 transition-colors text-sm group"
             whileHover={{ y: -2 }}
           >
             Back to top
