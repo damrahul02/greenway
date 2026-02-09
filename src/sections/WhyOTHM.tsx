@@ -1,236 +1,302 @@
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
-  GraduationCap,
-  Award,
   Building2,
-  TrendingUp,
   Clock,
+  Briefcase,
+  Globe,
+  GraduationCap,
+  ShieldCheck,
   CheckCircle,
-  Star,
-  Users,
+  Zap
 } from 'lucide-react';
 
 const WhyOTHM = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  const benefits = [
-    {
-      icon: Award,
-      title: 'UK Recognized',
-      description:
-        'OTHM qualifications are regulated by Ofqual and recognized by universities and employers worldwide.',
-    },
-    {
-      icon: Building2,
-      title: 'University Progression',
-      description:
-        'Direct entry to Bachelor and Master degree programs at UK and international universities.',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Career Boost',
-      description:
-        'Enhance your career prospects with qualifications that demonstrate professional competence.',
-    },
-    {
-      icon: Clock,
-      title: 'Fast Track',
-      description:
-        'Complete your qualification in 6-12 months compared to traditional 3-4 year degrees.',
-    },
-    {
-      icon: CheckCircle,
-      title: 'Flexible Learning',
-      description:
-        'Study at your own pace with online and blended learning options available.',
-    },
-    {
-      icon: GraduationCap,
-      title: 'Multiple Levels',
-      description:
-        'Choose from Level 3 to Level 7 qualifications covering various disciplines.',
-    },
-  ];
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   const levels = [
     {
       level: 'Level 3',
-      title: 'Foundation',
-      description: 'Equivalent to A-Levels',
+      title: 'Foundation Diploma',
+      desc: 'Equivalent to A-Levels. Entry requirement for Undergraduate.',
       duration: '6-9 Months',
+      color: 'blue'
     },
     {
       level: 'Level 4 & 5',
-      title: 'Undergraduate',
-      description: 'Equivalent to Year 1 & 2 of Bachelor',
-      duration: '9-12 Months',
+      title: 'Undergraduate Diploma',
+      desc: 'Equivalent to Year 1 & 2 of a UK Bachelor\'s degree.',
+      duration: '12-18 Months',
+      color: 'indigo'
     },
     {
       level: 'Level 6',
-      title: 'Bachelor',
-      description: 'Equivalent to Final Year Bachelor',
+      title: 'Graduate Diploma',
+      desc: 'Equivalent to Final Year of a Bachelor\'s degree.',
       duration: '6-9 Months',
+      color: 'violet'
     },
     {
       level: 'Level 7',
-      title: 'Master',
-      description: 'Equivalent to Postgraduate Diploma',
+      title: 'Postgraduate Diploma',
+      desc: 'Equivalent to Master\'s degree level.',
       duration: '6-9 Months',
-    },
+      color: 'purple'
+    }
   ];
 
   return (
-    <section
-      id="why-othm"
-      ref={sectionRef}
-      className="relative py-24 lg:py-32 bg-background overflow-hidden"
-    >
-      {/* Background */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-blue-500/5 to-transparent" />
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-      </div>
+    <div ref={containerRef} className="relative bg-background min-h-screen">
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <motion.div
+          style={{ y: heroY, opacity: heroOpacity }}
+          className="absolute inset-0 z-0"
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background z-10" />
+          <img
+            src="/othm-hero-bg.png"
+            alt="OTHM Hero"
+            className="w-full h-full object-cover opacity-60"
+          />
+        </motion.div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="flex items-center gap-3 mb-6"
-            >
-              <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                <GraduationCap className="w-6 h-6 text-blue-400" />
-              </div>
-              <span className="text-blue-400 font-semibold uppercase tracking-wider">
-                OTHM Qualifications
-              </span>
-            </motion.div>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6"
-            >
-              Why Choose <span className="text-blue-400">OTHM</span>?
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-muted-foreground text-lg leading-relaxed mb-6"
-            >
-              OTHM (Organization for Tourism and Hospitality Management) is a UK-based
-              awarding organization regulated by Ofqual. Their qualifications provide
-              a fast-track pathway to university degrees, recognized by top
-              institutions worldwide.
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-muted-foreground leading-relaxed"
-            >
-              With OTHM qualifications, you can progress directly to the final year
-              of a Bachelor&apos;s degree or enter a Master&apos;s program, saving both time
-              and money while achieving your academic goals.
-            </motion.p>
-          </div>
-
-          {/* Levels */}
+        <div className="relative z-20 container mx-auto px-6 text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-2 gap-4"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="inline-block mb-4 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-md"
           >
-            {levels.map((level, index) => (
+            <span className="text-blue-400 font-semibold tracking-wide uppercase text-sm">
+              UK Qualifications
+            </span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-blue-500"
+          >
+            Fast-Track Your Degree
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10"
+          >
+            Affordable, recognized, and direct pathways to UK universities.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Pathway Visualization */}
+      <section className="py-24 relative">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold mb-4">Your Pathway to Success</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              OTHM qualifications provide a stepping stone to higher education. Depending on your current level, you can start at any stage.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+            {/* Connecting Line (Desktop) */}
+            <div className="hidden lg:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 -translate-y-1/2 z-0" />
+
+            {levels.map((lvl, i) => (
               <motion.div
-                key={level.level}
-                className="glass rounded-xl p-5 border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
-                whileHover={{ scale: 1.03, y: -5 }}
+                key={lvl.level}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2 }}
+                className="relative z-10 glass p-6 rounded-2xl border border-white/5 hover:border-blue-500/30 transition-all group h-full flex flex-col"
               >
-                <div className="text-blue-400 font-bold text-lg mb-1">
-                  {level.level}
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-${lvl.color}-500 to-${lvl.color}-700 flex items-center justify-center mb-6 shadow-lg shadow-${lvl.color}-500/20 group-hover:scale-110 transition-transform`}>
+                  <p className="font-bold text-white">{i + 3}</p>
                 </div>
-                <div className="text-foreground font-semibold mb-1">{level.title}</div>
-                <div className="text-muted-foreground text-sm mb-2">
-                  {level.description}
+
+                <h3 className={`text-xl font-bold text-${lvl.color}-400 mb-2`}>{lvl.level}</h3>
+                <h4 className="text-lg font-semibold mb-3">{lvl.title}</h4>
+                <p className="text-sm text-muted-foreground mb-4 flex-grow">{lvl.desc}</p>
+
+                <div className="flex items-center gap-2 text-xs font-medium text-white/50 bg-white/5 p-2 rounded-lg">
+                  <Clock className="w-3 h-3" /> {lvl.duration}
                 </div>
-                <div className="text-muted-foreground/80 text-xs">{level.duration}</div>
               </motion.div>
             ))}
-          </motion.div>
-        </div>
-
-        {/* Benefits Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {benefits.map((benefit, index) => (
-            <motion.div
-              key={benefit.title}
-              className="group glass rounded-xl p-6 border border-blue-500/10 hover:border-blue-500/30 transition-all duration-500"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-              whileHover={{ y: -5 }}
-            >
-              <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                <benefit.icon className="w-6 h-6 text-blue-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">
-                {benefit.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {benefit.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Testimonial */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 glass rounded-2xl p-8 lg:p-12 border border-blue-500/20"
-        >
-          <div className="flex flex-col lg:flex-row items-center gap-8">
-            <div className="flex-shrink-0">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                <Users className="w-10 h-10 text-foreground" />
-              </div>
-            </div>
-            <div className="flex-1 text-center lg:text-left">
-              <div className="flex items-center justify-center lg:justify-start gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                ))}
-              </div>
-              <p className="text-lg text-muted-foreground italic mb-4">
-                &quot;The OTHM Level 5 Diploma at Greenway Academy was a game-changer for
-                me. After completing the course, I got direct entry into the final
-                year of my Business Administration degree at a UK university. The
-                support from instructors was exceptional.&quot;
-              </p>
-              <div className="text-foreground font-semibold">Mohammad Rahman</div>
-              <div className="text-muted-foreground text-sm">
-                OTHM Level 5 Graduate | Now at University of Birmingham
-              </div>
-            </div>
           </div>
-        </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+
+      {/* Benefits Grid */}
+      <section className="py-24 bg-black/20">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+
+            <div className="space-y-8">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-4xl font-bold mb-6">Why Choose OTHM?</h2>
+                <p className="text-lg text-muted-foreground">
+                  Regulated by Ofqual (Office of Qualifications and Examinations Regulation), OTHM qualifications are recognized globally by universities and employers.
+                </p>
+              </motion.div>
+
+              {[
+                { icon: Briefcase, title: 'Career Progression', desc: 'Practical skills that employers value immediately.' },
+                { icon: Globe, title: 'Global Recognition', desc: 'accepted by universities in UK, USA, Canada, Australia.' },
+                { icon: Building2, title: 'Affordable', desc: 'Save up to 60% of tuition fees compared to traditional university routes.' }
+              ].map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15 }}
+                  className="flex gap-4"
+                >
+                  <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-1">{item.title}</h3>
+                    <p className="text-muted-foreground">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="relative aspect-square max-w-md mx-auto">
+              {/* Animated Background Elements */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" />
+
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-[-20px] rounded-full border border-blue-500/10 border-dashed"
+              />
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-[-40px] rounded-full border border-indigo-500/10 border-dotted opacity-50"
+              />
+
+              {/* Content Grid */}
+              <div className="grid grid-cols-2 gap-4 h-full relative z-10">
+                {/* Card 1 */}
+                <motion.div
+                  whileHover={{ scale: 1.05, translateY: -5 }}
+                  className="relative bg-gradient-to-br from-[#1a1f3c] to-[#0f1225] rounded-3xl p-6 flex flex-col items-center justify-center text-center border border-white/5 shadow-xl shadow-blue-900/20 group cursor-pointer overflow-hidden"
+                >
+                  <div className="absolute inset-0 z-0">
+                    <img src="/othm-ofqual.jpg" alt="Ofqual" className="w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-blue-900/80 mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-transparent to-transparent" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform text-blue-400 backdrop-blur-sm border border-white/10">
+                      <ShieldCheck className="w-6 h-6" />
+                    </div>
+                    <span className="text-lg font-bold text-white group-hover:text-blue-200 transition-colors drop-shadow-md">Ofqual Regulated</span>
+                  </div>
+                </motion.div>
+
+                {/* Card 2 */}
+                <motion.div
+                  whileHover={{ scale: 1.05, translateY: -5 }}
+                  className="relative bg-gradient-to-bl from-[#1e1b4b] to-[#0f1225] rounded-3xl p-6 flex flex-col items-center justify-center text-center border border-white/5 shadow-xl shadow-indigo-900/20 group cursor-pointer overflow-hidden mt-8"
+                >
+                  <div className="absolute inset-0 z-0">
+                    <img src="/othm-university.jpg" alt="University" className="w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-indigo-900/80 mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-indigo-950 via-transparent to-transparent" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform text-indigo-400 backdrop-blur-sm border border-white/10">
+                      <GraduationCap className="w-6 h-6" />
+                    </div>
+                    <span className="text-lg font-bold text-white group-hover:text-indigo-200 transition-colors drop-shadow-md">University Access</span>
+                  </div>
+                </motion.div>
+
+                {/* Card 3 */}
+                <motion.div
+                  whileHover={{ scale: 1.05, translateY: -5 }}
+                  className="relative bg-gradient-to-tr from-[#2e1065] to-[#0f1225] rounded-3xl p-6 flex flex-col items-center justify-center text-center border border-white/5 shadow-xl shadow-purple-900/20 group cursor-pointer overflow-hidden -mt-8"
+                >
+                  <div className="absolute inset-0 z-0">
+                    <img src="/othm-wes.jpg" alt="WES" className="w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-purple-900/80 mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-purple-950 via-transparent to-transparent" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform text-purple-400 backdrop-blur-sm border border-white/10">
+                      <CheckCircle className="w-6 h-6" />
+                    </div>
+                    <span className="text-lg font-bold text-white group-hover:text-purple-200 transition-colors drop-shadow-md">WES Approved</span>
+                  </div>
+                </motion.div>
+
+                {/* Card 4 */}
+                <motion.div
+                  whileHover={{ scale: 1.05, translateY: -5 }}
+                  className="relative bg-gradient-to-tl from-[#164e63] to-[#0f1225] rounded-3xl p-6 flex flex-col items-center justify-center text-center border border-white/5 shadow-xl shadow-cyan-900/20 group cursor-pointer overflow-hidden"
+                >
+                  <div className="absolute inset-0 z-0">
+                    <img src="/othm-fasttrack.jpg" alt="Fast Track" className="w-full h-full object-cover opacity-50 group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-cyan-900/80 mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-cyan-950 via-transparent to-transparent" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform text-cyan-400 backdrop-blur-sm border border-white/10">
+                      <Zap className="w-6 h-6" />
+                    </div>
+                    <span className="text-lg font-bold text-white group-hover:text-cyan-200 transition-colors drop-shadow-md">Fast Track</span>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-32 relative text-center">
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 to-transparent" />
+        <div className="container mx-auto px-6 relative z-10">
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">Start Your Journey Today</h2>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold transition-all shadow-lg shadow-blue-500/25">
+              View Courses
+            </button>
+            <button className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full font-bold backdrop-blur-sm transition-all border border-white/10">
+              Contact an Advisor
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 

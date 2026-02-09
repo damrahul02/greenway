@@ -6,8 +6,10 @@ import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Services from './sections/Services';
-import WhyIELTS from './sections/WhyIELTS';
-import WhyOTHM from './sections/WhyOTHM';
+import WhyIELTSPage from './pages/WhyIELTSPage';
+import WhyOTHMPage from './pages/WhyOTHMPage';
+import ContactPage from './pages/ContactPage';
+import AboutPage from './pages/AboutPage';
 import Journey from './sections/Journey';
 import WhyChoose from './sections/WhyChoose';
 import Statistics from './sections/Statistics';
@@ -36,16 +38,12 @@ const HomePage = () => {
         <Hero />
 
         {/* About Section */}
-        <About />
+        {/* About section moved to separate page */}
 
         {/* Services/Programmes Section */}
         <Services />
 
-        {/* Why IELTS Section */}
-        <WhyIELTS />
 
-        {/* Why OTHM Section */}
-        <WhyOTHM />
 
         {/* Journey Section */}
         <Journey />
@@ -105,6 +103,10 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/enroll" element={<EnrollPage />} />
+                <Route path="/why-ielts" element={<WhyIELTSPage />} />
+                <Route path="/why-othm" element={<WhyOTHMPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/about" element={<AboutPage />} />
               </Routes>
             </>
           )}

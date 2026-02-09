@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, GraduationCap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle';
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', href: '#home' },
-    { name: 'About Us', href: '#about' },
+    { name: 'About Us', href: '/about' },
     {
       name: 'Services',
       href: '#services',
@@ -29,19 +29,27 @@ const Navbar = () => {
         {
           name: 'IELTS',
           href: '#ielts',
-          subItems: [{ name: 'Why IELTS', href: '#why-ielts' }],
+          subItems: [{ name: 'Why IELTS', href: '/why-ielts' }],
         },
         {
           name: 'OTHM',
           href: '#othm',
-          subItems: [{ name: 'Why OTHM', href: '#why-othm' }],
+          subItems: [{ name: 'Why OTHM', href: '/why-othm' }],
         },
       ],
     },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   const scrollToSection = (href: string) => {
+    setIsMobileMenuOpen(false);
+    setIsServicesOpen(false);
+
+    if (href.startsWith('/')) {
+      navigate(href);
+      return;
+    }
+
     if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
@@ -56,8 +64,6 @@ const Navbar = () => {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-    setIsMobileMenuOpen(false);
-    setIsServicesOpen(false);
   };
 
   const handleEnrollClick = () => {
@@ -71,11 +77,10 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
-            ? 'backdrop-blur-xl bg-background/90 border-b border-white/5'
-            : 'bg-transparent'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+          ? 'backdrop-blur-xl bg-background/90 border-b border-white/5'
+          : 'bg-transparent'
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
@@ -134,9 +139,8 @@ const Navbar = () => {
                       >
                         {link.name}
                         <ChevronDown
-                          className={`w-4 h-4 transition-transform duration-300 ${
-                            isServicesOpen ? 'rotate-180' : ''
-                          }`}
+                          className={`w-4 h-4 transition-transform duration-300 ${isServicesOpen ? 'rotate-180' : ''
+                            }`}
                         />
                       </motion.button>
 
@@ -206,8 +210,7 @@ const Navbar = () => {
                 </div>
               ))}
 
-              {/* Theme Toggle */}
-              <ThemeToggle />
+
 
               {/* CTA Button */}
               <motion.button
@@ -225,7 +228,7 @@ const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center gap-4">
-              <ThemeToggle />
+
               <motion.button
                 className="p-2 text-white"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
