@@ -10,10 +10,18 @@ import WhyIELTSPage from './pages/WhyIELTSPage';
 import WhyOTHMPage from './pages/WhyOTHMPage';
 import ContactPage from './pages/ContactPage';
 import AboutPage from './pages/AboutPage';
+import FacultiesPage from './pages/FacultiesPage';
+import EventsPage from './pages/EventsPage';
+import BlogPage from './pages/BlogPage';
+import AdmissionPage from './pages/AdmissionPage';
+import CareerPage from './pages/CareerPage';
+import PoliciesPage from './pages/PoliciesPage';
+import PlaceholderPage from './pages/PlaceholderPage';
 import Journey from './sections/Journey';
 import WhyChoose from './sections/WhyChoose';
 import Statistics from './sections/Statistics';
 import Testimonials from './sections/Testimonials';
+import GoogleReviews from './sections/GoogleReviews';
 import CTA from './sections/CTA';
 import Footer from './sections/Footer';
 import EnrollPage from './pages/EnrollPage';
@@ -56,6 +64,9 @@ const HomePage = () => {
 
         {/* Testimonials Section */}
         <Testimonials />
+
+        {/* Google Reviews Section */}
+        <GoogleReviews />
 
         {/* CTA Section */}
         <CTA />
@@ -103,10 +114,19 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/enroll" element={<EnrollPage />} />
+                <Route path="/apply-now" element={<EnrollPage />} />
                 <Route path="/why-ielts" element={<WhyIELTSPage />} />
                 <Route path="/why-othm" element={<WhyOTHMPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/about" element={<AboutPage />} />
+
+                {/* Pages */}
+                <Route path="/faculties" element={<FacultiesPage />} />
+                <Route path="/events" element={<EventsPage />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/admission" element={<AdmissionPage />} />
+                <Route path="/career" element={<CareerPage />} />
+                <Route path="/policies" element={<PoliciesPage />} />
               </Routes>
             </>
           )}

@@ -20,11 +20,10 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About Us', href: '/about' },
+    { name: 'Home', href: '/' },
     {
-      name: 'Services',
-      href: '#services',
+      name: 'All Courses',
+      href: '#courses',
       dropdown: [
         {
           name: 'IELTS',
@@ -38,6 +37,13 @@ const Navbar = () => {
         },
       ],
     },
+    { name: 'About Us', href: '/about' },
+    { name: 'Faculties', href: '/faculties' },
+    { name: 'Events', href: '/events' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Admission', href: '/admission' },
+    { name: 'Career', href: '/career' },
+    { name: 'Policies', href: '/policies' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -66,10 +72,7 @@ const Navbar = () => {
     }
   };
 
-  const handleEnrollClick = () => {
-    navigate('/enroll');
-    setIsMobileMenuOpen(false);
-  };
+
 
   return (
     <>
@@ -123,7 +126,7 @@ const Navbar = () => {
             </motion.a>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden xl:flex items-center gap-4">
               {navLinks.map((link, index) => (
                 <div key={link.name} className="relative">
                   {link.dropdown ? (
@@ -214,20 +217,20 @@ const Navbar = () => {
 
               {/* CTA Button */}
               <motion.button
-                onClick={handleEnrollClick}
-                className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-green-500/30 transition-all btn-shine"
+                onClick={() => navigate('/apply-now')}
+                className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-green-500/30 transition-all btn-shine whitespace-nowrap"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.4, ease: [0.68, -0.55, 0.265, 1.55] }}
               >
-                Enroll Now
+                Apply Now
               </motion.button>
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="lg:hidden flex items-center gap-4">
+            <div className="xl:hidden flex items-center gap-4">
 
               <motion.button
                 className="p-2 text-white"
@@ -253,10 +256,10 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-40 lg:hidden"
+            className="fixed inset-0 z-40 xl:hidden"
           >
             <div className="absolute inset-0 bg-background/95 backdrop-blur-xl" />
-            <div className="relative h-full flex flex-col pt-24 px-6">
+            <div className="relative h-full flex flex-col pt-24 px-6 overflow-y-auto pb-24">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.name}
@@ -318,13 +321,16 @@ const Navbar = () => {
               ))}
 
               <motion.button
-                onClick={handleEnrollClick}
+                onClick={() => {
+                  navigate('/apply-now');
+                  setIsMobileMenuOpen(false);
+                }}
                 className="mt-8 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full text-center"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.5 }}
               >
-                Enroll Now
+                Apply Now
               </motion.button>
             </div>
           </motion.div>
