@@ -16,7 +16,6 @@ import BlogPage from './pages/BlogPage';
 import AdmissionPage from './pages/AdmissionPage';
 import CareerPage from './pages/CareerPage';
 import PoliciesPage from './pages/PoliciesPage';
-import PlaceholderPage from './pages/PlaceholderPage';
 import Journey from './sections/Journey';
 import WhyChoose from './sections/WhyChoose';
 import Statistics from './sections/Statistics';
