@@ -1,25 +1,44 @@
-import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, GraduationCap } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Menu, X, ChevronDown, ChevronRight, GraduationCap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+interface SubItem {
+  name: string;
+  href: string;
+}
+
+interface DropdownItem {
+  name: string;
+  href: string;
+  subItems?: SubItem[];
+}
+
+interface NavLink {
+  name: string;
+  href: string;
+  dropdown?: DropdownItem[];
+}
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [openFlyout, setOpenFlyout] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [mobileSubExpanded, setMobileSubExpanded] = useState<string | null>(null);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
+  const navLinks: NavLink[] = [
     { name: 'Home', href: '/' },
     {
       name: 'All Courses',
@@ -37,7 +56,24 @@ const Navbar = () => {
         },
       ],
     },
-    { name: 'About Us', href: '/about' },
+    {
+      name: 'About Us',
+      href: '/about',
+      dropdown: [
+        {
+          name: 'Accreditation',
+          href: '/accreditation',
+          subItems: [
+            { name: 'IELTS', href: '/accreditation/ielts' },
+            { name: 'ATHE', href: '/accreditation/athe' },
+            { name: 'OTHM', href: '/accreditation/othm' },
+          ],
+        },
+        { name: 'Sister Concern', href: '/sister-concern' },
+        { name: 'Gallery', href: '/gallery' },
+        { name: 'Video Gallery', href: '/video-gallery' },
+      ],
+    },
     { name: 'Faculties', href: '/faculties' },
     { name: 'Events', href: '/events' },
     { name: 'Blog', href: '/blog' },
@@ -49,7 +85,8 @@ const Navbar = () => {
 
   const scrollToSection = (href: string) => {
     setIsMobileMenuOpen(false);
-    setIsServicesOpen(false);
+    setOpenDropdown(null);
+    setOpenFlyout(null);
 
     if (href.startsWith('/')) {
       navigate(href);
@@ -60,19 +97,13 @@ const Navbar = () => {
       navigate('/');
       setTimeout(() => {
         const element = document.querySelector(href);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     } else {
       const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      if (element) element.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-
 
   return (
     <>
@@ -89,11 +120,8 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <motion.a
-              href="#home"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('#home');
-              }}
+              href="/"
+              onClick={(e) => { e.preventDefault(); scrollToSection('/'); }}
               className="flex items-center gap-3 group"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -116,12 +144,8 @@ const Navbar = () => {
                 </svg>
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-foreground tracking-tight">
-                  GREENWAY
-                </span>
-                <span className="text-sm font-medium text-blue-400 -mt-1">
-                  ACADEMY
-                </span>
+                <span className="text-xl font-bold text-foreground tracking-tight">GREENWAY</span>
+                <span className="text-sm font-medium text-blue-400 -mt-1">ACADEMY</span>
               </div>
             </motion.a>
 
@@ -132,8 +156,8 @@ const Navbar = () => {
                   {link.dropdown ? (
                     <div
                       className="relative"
-                      onMouseEnter={() => setIsServicesOpen(true)}
-                      onMouseLeave={() => setIsServicesOpen(false)}
+                      onMouseEnter={() => setOpenDropdown(link.name)}
+                      onMouseLeave={() => { setOpenDropdown(null); setOpenFlyout(null); }}
                     >
                       <motion.button
                         className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors underline-grow py-2"
@@ -142,51 +166,64 @@ const Navbar = () => {
                       >
                         {link.name}
                         <ChevronDown
-                          className={`w-4 h-4 transition-transform duration-300 ${isServicesOpen ? 'rotate-180' : ''
-                            }`}
+                          className={`w-4 h-4 transition-transform duration-300 ${openDropdown === link.name ? 'rotate-180' : ''}`}
                         />
                       </motion.button>
 
                       <AnimatePresence>
-                        {isServicesOpen && (
+                        {openDropdown === link.name && (
                           <motion.div
-                            initial={{ opacity: 0, y: 10, rotateX: -15 }}
+                            initial={{ opacity: 0, y: 10, rotateX: -10 }}
                             animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                            exit={{ opacity: 0, y: 10, rotateX: -15 }}
-                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                            className="absolute top-full left-0 mt-2 w-56 glass rounded-xl overflow-hidden shadow-2xl"
+                            exit={{ opacity: 0, y: 10, rotateX: -10 }}
+                            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                            className="absolute top-full left-0 mt-2 w-56 glass rounded-xl overflow-visible shadow-2xl z-50"
                             style={{ perspective: '1000px' }}
+                            ref={dropdownRef}
                           >
                             {link.dropdown.map((item) => (
-                              <div key={item.name} className="relative group">
-                                <a
-                                  href={item.href}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    scrollToSection(item.href);
+                              <div
+                                key={item.name}
+                                className="relative"
+                                onMouseEnter={() => item.subItems && setOpenFlyout(item.name)}
+                                onMouseLeave={() => setOpenFlyout(null)}
+                              >
+                                <button
+                                  onClick={() => {
+                                    if (!item.subItems) scrollToSection(item.href);
                                   }}
-                                  className="flex items-center gap-3 px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all"
+                                  className="w-full flex items-center justify-between px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all text-left"
                                 >
-                                  <GraduationCap className="w-5 h-5 text-green-400" />
                                   <span className="font-medium">{item.name}</span>
-                                </a>
+                                  {item.subItems && (
+                                    <ChevronRight className="w-4 h-4 text-green-400" />
+                                  )}
+                                </button>
+
+                                {/* Flyout sub-menu */}
                                 {item.subItems && (
-                                  <div className="bg-card/50">
-                                    {item.subItems.map((subItem) => (
-                                      <a
-                                        key={subItem.name}
-                                        href={subItem.href}
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          scrollToSection(subItem.href);
-                                        }}
-                                        className="flex items-center gap-3 px-4 py-2 pl-12 text-sm text-muted-foreground hover:text-green-400 hover:bg-white/5 transition-all"
+                                  <AnimatePresence>
+                                    {openFlyout === item.name && (
+                                      <motion.div
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -10 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="absolute left-full top-0 ml-1 w-44 glass rounded-xl overflow-hidden shadow-2xl z-50"
                                       >
-                                        <span className="w-1.5 h-1.5 rounded-full bg-green-400/50"></span>
-                                        {subItem.name}
-                                      </a>
-                                    ))}
-                                  </div>
+                                        {item.subItems.map((sub) => (
+                                          <button
+                                            key={sub.name}
+                                            onClick={() => scrollToSection(sub.href)}
+                                            className="w-full flex items-center gap-3 px-4 py-3 text-muted-foreground hover:text-green-400 hover:bg-white/5 transition-all text-left"
+                                          >
+                                            <span className="w-2 h-2 rounded-full bg-green-400/60 flex-shrink-0" />
+                                            <span className="font-medium">{sub.name}</span>
+                                          </button>
+                                        ))}
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
                                 )}
                               </div>
                             ))}
@@ -197,14 +234,11 @@ const Navbar = () => {
                   ) : (
                     <motion.a
                       href={link.href}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        scrollToSection(link.href);
-                      }}
+                      onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
                       className="text-muted-foreground hover:text-foreground transition-colors underline-grow py-2"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4, delay: index * 0.1 }}
+                      transition={{ duration: 0.4, delay: index * 0.05 }}
                       whileHover={{ y: -2 }}
                     >
                       {link.name}
@@ -212,8 +246,6 @@ const Navbar = () => {
                   )}
                 </div>
               ))}
-
-
 
               {/* CTA Button */}
               <motion.button
@@ -231,17 +263,12 @@ const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <div className="xl:hidden flex items-center gap-4">
-
               <motion.button
                 className="p-2 text-white"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 whileTap={{ scale: 0.9 }}
               >
-                {isMobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </motion.button>
             </div>
           </div>
@@ -265,53 +292,81 @@ const Navbar = () => {
                   key={link.name}
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  transition={{ duration: 0.4, delay: index * 0.07 }}
                 >
                   {link.dropdown ? (
-                    <div className="py-4 border-b border-white/10">
-                      <span className="text-lg font-medium text-foreground">{link.name}</span>
-                      <div className="mt-3 ml-4 space-y-3">
-                        {link.dropdown.map((item) => (
-                          <div key={item.name}>
-                            <a
-                              href={item.href}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                scrollToSection(item.href);
-                              }}
-                              className="flex items-center gap-2 text-muted-foreground hover:text-green-400 transition-colors"
-                            >
-                              <GraduationCap className="w-5 h-5" />
-                              {item.name}
-                            </a>
-                            {item.subItems && (
-                              <div className="ml-7 mt-2 space-y-2">
-                                {item.subItems.map((subItem) => (
-                                  <a
-                                    key={subItem.name}
-                                    href={subItem.href}
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      scrollToSection(subItem.href);
-                                    }}
-                                    className="block text-sm text-muted-foreground hover:text-green-400 transition-colors"
+                    <div className="border-b border-white/10">
+                      <button
+                        className="w-full flex items-center justify-between py-4 text-xl font-medium text-foreground"
+                        onClick={() => setMobileExpanded(mobileExpanded === link.name ? null : link.name)}
+                      >
+                        {link.name}
+                        <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${mobileExpanded === link.name ? 'rotate-180' : ''}`} />
+                      </button>
+                      <AnimatePresence>
+                        {mobileExpanded === link.name && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="overflow-hidden ml-4 mb-3 space-y-1"
+                          >
+                            {link.dropdown.map((item) => (
+                              <div key={item.name}>
+                                {item.subItems ? (
+                                  <>
+                                    <button
+                                      className="w-full flex items-center justify-between py-2 text-muted-foreground hover:text-green-400 transition-colors"
+                                      onClick={() => setMobileSubExpanded(mobileSubExpanded === item.name ? null : item.name)}
+                                    >
+                                      <div className="flex items-center gap-2">
+                                        <GraduationCap className="w-4 h-4" />
+                                        <span>{item.name}</span>
+                                      </div>
+                                      <ChevronRight className={`w-4 h-4 transition-transform ${mobileSubExpanded === item.name ? 'rotate-90' : ''}`} />
+                                    </button>
+                                    <AnimatePresence>
+                                      {mobileSubExpanded === item.name && (
+                                        <motion.div
+                                          initial={{ height: 0, opacity: 0 }}
+                                          animate={{ height: 'auto', opacity: 1 }}
+                                          exit={{ height: 0, opacity: 0 }}
+                                          className="ml-6 overflow-hidden space-y-2 py-1"
+                                        >
+                                          {item.subItems.map((sub) => (
+                                            <button
+                                              key={sub.name}
+                                              onClick={() => scrollToSection(sub.href)}
+                                              className="flex items-center gap-2 py-1.5 text-sm text-muted-foreground hover:text-green-400 transition-colors w-full text-left"
+                                            >
+                                              <span className="w-1.5 h-1.5 rounded-full bg-green-400/60" />
+                                              {sub.name}
+                                            </button>
+                                          ))}
+                                        </motion.div>
+                                      )}
+                                    </AnimatePresence>
+                                  </>
+                                ) : (
+                                  <button
+                                    onClick={() => scrollToSection(item.href)}
+                                    className="w-full flex items-center gap-2 py-2 text-muted-foreground hover:text-green-400 transition-colors text-left"
                                   >
-                                    {subItem.name}
-                                  </a>
-                                ))}
+                                    <span className="w-1.5 h-1.5 rounded-full bg-green-400/40" />
+                                    {item.name}
+                                  </button>
+                                )}
                               </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   ) : (
                     <a
                       href={link.href}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        scrollToSection(link.href);
-                      }}
+                      onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
                       className="block py-4 text-xl font-medium text-foreground border-b border-white/10 hover:text-green-400 transition-colors"
                     >
                       {link.name}
@@ -321,10 +376,7 @@ const Navbar = () => {
               ))}
 
               <motion.button
-                onClick={() => {
-                  navigate('/apply-now');
-                  setIsMobileMenuOpen(false);
-                }}
+                onClick={() => { navigate('/apply-now'); setIsMobileMenuOpen(false); }}
                 className="mt-8 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full text-center"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

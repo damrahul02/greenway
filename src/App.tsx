@@ -16,6 +16,12 @@ import BlogPage from './pages/BlogPage';
 import AdmissionPage from './pages/AdmissionPage';
 import CareerPage from './pages/CareerPage';
 import PoliciesPage from './pages/PoliciesPage';
+import SisterConcernPage from './pages/SisterConcernPage';
+import AccreditationIELTSPage from './pages/AccreditationIELTSPage';
+import AccreditationATHEPage from './pages/AccreditationATHEPage';
+import AccreditationOTHMPage from './pages/AccreditationOTHMPage';
+import GalleryPage from './pages/GalleryPage';
+import VideoGalleryPage from './pages/VideoGalleryPage';
 import Journey from './sections/Journey';
 import WhyChoose from './sections/WhyChoose';
 import Statistics from './sections/Statistics';
@@ -126,6 +132,12 @@ function App() {
                 <Route path="/admission" element={<AdmissionPage />} />
                 <Route path="/career" element={<CareerPage />} />
                 <Route path="/policies" element={<PoliciesPage />} />
+                <Route path="/sister-concern" element={<SisterConcernPage />} />
+                <Route path="/accreditation/ielts" element={<AccreditationIELTSPage />} />
+                <Route path="/accreditation/athe" element={<AccreditationATHEPage />} />
+                <Route path="/accreditation/othm" element={<AccreditationOTHMPage />} />
+                <Route path="/gallery" element={<GalleryPage />} />
+                <Route path="/video-gallery" element={<VideoGalleryPage />} />
               </Routes>
             </>
           )}
