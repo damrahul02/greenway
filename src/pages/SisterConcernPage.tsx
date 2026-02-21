@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ExternalLink, Globe, GraduationCap, ArrowRight } from 'lucide-react';
+import { Globe, GraduationCap, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Footer from '../sections/Footer';
 
